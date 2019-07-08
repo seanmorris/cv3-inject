@@ -8,11 +8,11 @@ const Inject = (baseClass, injections) => {
 
 Are you trying to instantiate like this?
 
-new Injectable.inject(baseClass, injections);
+new Inject(baseClass, injections);
 
 If so please try:
 
-new (Injectable.inject(baseClass, injections));
+new (Inject(baseClass, injections));
 
 Please note the parenthesis.
 `);
