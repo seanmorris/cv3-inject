@@ -64,7 +64,7 @@ import { XmasTree } from './XmasTree';
 const rs = new RedStar;
 
 const sameTree = new (Inject(XmasTree, {
-	lights: Lights.inject({star: rs})
+	lights: Inject(Lights, {star: rs})
 	, star: rs
 }));
 ```
