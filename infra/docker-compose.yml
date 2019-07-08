@@ -1,0 +1,11 @@
+version: '3'
+services:
+
+  cv3-inject.build:
+    build:
+      context: ../
+      dockerfile: infra/build.dockerfile
+    image: cv3-inject.build
+    restart: on-failure
+    volumes:
+      - ../:/app
