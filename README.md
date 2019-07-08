@@ -13,7 +13,7 @@ $ npm install cv3-inject
 Define default dependencies with Inject:
 
 ```javascript
-import { Injectable } from 'cv3-inject/Injectable';
+import { Inject } from 'cv3-inject/Inject';
 
 import { Star   } from './Star';
 import { Lights } from './Lights';
