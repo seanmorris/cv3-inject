@@ -33,14 +33,12 @@ Please note the parenthesis.
 		{
 			super(...args);
 
-			// const injections = subclass[injectionSymbol]();
-
 			for(let name in allInjections)
 			{
 				let   instance  = undefined;
 				const injection = allInjections[name];
 
-				if(injection.prototype)
+				if(injection.prototype && !name.match(/^_*?[A-Z]/))
 				{
 					instance = new injection;
 				}

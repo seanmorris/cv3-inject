@@ -118,14 +118,35 @@ const staticTest = () => {
 		, 'Lights.star is not reference to Star.'
 	);
 
+	const RedLights = Inject(Lights, {star: RedStar});
+
 	const RedTree = Inject(XmasTree, {
-		lights: Inject(Lights, {star: RedStar})
-		, star: RedStar
+		lights:   RedLights
+		, star:   RedStar
+		, Lights: RedLights
+		, Star:   RedStar
 	});
 
 	console.assert(
 		RedTree.star == RedStar
 		, 'RedTree.star is not reference to RedStar.'
+	);
+
+	const redTree = new RedTree;
+
+	console.assert(
+		typeof redTree.Lights == 'function'
+		, 'redTree.Lights is not a class.'
+	);
+
+	console.assert(
+		typeof redTree.lights == 'object'
+		, 'redTree.Lights is not an object.'
+	);
+
+	console.assert(
+		redTree.lights instanceof RedLights
+		, 'redTree.Lights is not an object of local type "RedLights".'
 	);
 };
 

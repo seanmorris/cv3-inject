@@ -19,8 +19,7 @@ import { Star   } from './Star';
 import { Lights } from './Lights';
 
 export class XmasTree extends Inject(class{}, {
-	lights: Lights
-	, star: Star
+	lights: Lights, star:Star
 }) {
 	constructor()
 	{
