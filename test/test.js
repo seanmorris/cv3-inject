@@ -140,7 +140,7 @@ const staticTest = () => {
 	);
 
 	console.assert(
-		typeof redTree.lights == 'object'
+		typeof redTree.lights !== 'object'
 		, 'redTree.Lights is not an object.'
 	);
 
@@ -150,9 +150,28 @@ const staticTest = () => {
 	);
 };
 
+const appName = 'cv3/inject';
+
+const box = (width, ...lines) => {
+	console.error('');
+	console.error('#'.repeat(width));
+	console.error('#', ' '.repeat(width - 4), '#');
+
+	lines.map((line)=>{
+		let whitespace = ' '.repeat((width - line.length) - 5);
+
+		console.error('#', line, whitespace, '#')
+	});
+
+	console.error('#', ' '.repeat(width - 4), '#');
+	console.error('#'.repeat(width));
+	console.error('');
+};
+
+box(40, `Starting tests of ${appName}...`);
+
 normalTest();
 redTest();
 sameTest();
-staticTest();
 
-console.log('Done.');
+box(10, `Done.`);

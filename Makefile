@@ -1,53 +1,37 @@
-.PHONY: build test install-dependencies update-dependencies clean reconfigure audit
+.PHONY: build test install-dependencies update-dependencies clean audit audit-fix
 
-index.js: source/Inject.js
-	@ docker run --rm \
+NODE=docker run --rm \
 	-v `pwd`:/app \
 	-w="/app" \
-	node:12.6.0-alpine \
-		npm install \
+	node:12.6.0-alpine
+
+index.js: source/Inject.js
+	@ ${NODE} \
+		npm install -s \
 		&& npx babel source --out-dir ./
 
 test:
-	@ docker run --rm \
-	-v `pwd`:/app \
-	-w="/app" \
-	node:12.6.0-alpine \
-		npm install \
+	@ ${NODE} \
+		npm install -s \
 		&& npx babel source test --out-dir ./ \
 		&& node test.js
 
 install-dependencies:
-	@ docker run --rm \
-	-v `pwd`:/app \
-	-w="/app" \
-	node:12.6.0-alpine \
+	@ ${NODE} \
 		npm install
 
 update-dependencies:
-	@ docker run --rm \
-	-v `pwd`:/app \
-	-w="/app" \
-	node:12.6.0-alpine \
+	@ ${NODE} \
 		npm update
 
 clean:
-	@ docker run --rm \
-	-v `pwd`:/app \
-	-w="/app" \
-	node:12.6.0-alpine \
-		rm -rf node_modules *.js configure
+	@ ${NODE} \
+		rm -rf node_modules *.js
 
 audit:
-	@ docker run --rm \
-	-v `pwd`:/app \
-	-w="/app" \
-	node:12.6.0-alpine \
+	@ ${NODE} \
 		npm audit
 
 audit-fix:
-	@ docker run --rm \
-	-v `pwd`:/app \
-	-w="/app" \
-	node:12.6.0-alpine \
+	@ ${NODE} \
 		npm audit fix
