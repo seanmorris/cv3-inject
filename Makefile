@@ -1,4 +1,4 @@
-.PHONY: build test clean reconfigure
+.PHONY: build test install-dependencies update-dependencies clean reconfigure audit
 
 index.js: source/Inject.js
 	@ docker run --rm \
@@ -17,7 +17,14 @@ test:
 		&& npx babel source test --out-dir ./ \
 		&& node test.js
 
-reconfigure:
+install-dependencies:
+	@ docker run --rm \
+	-v `pwd`:/app \
+	-w="/app" \
+	node:12.6.0-alpine \
+		npm install
+
+update-dependencies:
 	@ docker run --rm \
 	-v `pwd`:/app \
 	-w="/app" \
@@ -29,4 +36,18 @@ clean:
 	-v `pwd`:/app \
 	-w="/app" \
 	node:12.6.0-alpine \
-		rm -rf node_modules *.js configure;
+		rm -rf node_modules *.js configure
+
+audit:
+	@ docker run --rm \
+	-v `pwd`:/app \
+	-w="/app" \
+	node:12.6.0-alpine \
+		npm audit
+
+audit-fix:
+	@ docker run --rm \
+	-v `pwd`:/app \
+	-w="/app" \
+	node:12.6.0-alpine \
+		npm audit fix
