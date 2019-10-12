@@ -1,37 +1,57 @@
-.PHONY: build test install-dependencies update-dependencies clean audit audit-fix
+.PHONY: build update test clean
 
-NODE=docker run --rm \
-	-v `pwd`:/app \
-	-w="/app" \
-	node:12.6.0-alpine
+build:
+	@ npx babel source --out-dir .
 
-index.js: source/Inject.js
-	@ ${NODE} \
-		npm install -s \
-		&& npx babel source --out-dir ./
+build-test:
+	@ npx babel source test --out-dir .
+
+install:
+	@ npm install
+
+update:
+	@ npm update
 
 test:
-	@ ${NODE} \
-		npm install -s \
-		&& npx babel source test --out-dir ./ \
-		&& node test.js
-
-install-dependencies:
-	@ ${NODE} \
-		npm install
-
-update-dependencies:
-	@ ${NODE} \
-		npm update
+	@ node test.js
 
 clean:
-	@ ${NODE} \
-		rm -rf node_modules *.js
+	@ rm -rf node_modules *.js
 
-audit:
-	@ ${NODE} \
-		npm audit
+# .PHONY: build test install-dependencies update-dependencies clean audit audit-fix
 
-audit-fix:
-	@ ${NODE} \
-		npm audit fix
+# NODE=docker run --rm \
+# 	-v `pwd`:/app \
+# 	-w="/app" \
+# 	node:12.6.0-alpine
+
+# build: source/Inject.js
+# 	@ ${NODE} \
+# 		make install-dependencies \
+# 		&& npx babel source --out-dir ./
+
+# test:
+# 	@ ${NODE} \
+# 		make install-dependencies \
+# 		&& npx babel source test --out-dir ./ \
+# 		&& node test.js
+
+# install-dependencies: package.json
+# 	@ ${NODE} \
+# 		npm install
+
+# update-dependencies: package.json
+# 	@ ${NODE} \
+# 		npm update
+
+# clean:
+# 	@ ${NODE} \
+# 		rm -rf node_modules *.js
+
+# audit:
+# 	@ ${NODE} \
+# 		npm audit
+
+# audit-fix:
+# 	@ ${NODE} \
+# 		npm audit fix
