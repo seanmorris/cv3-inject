@@ -1,6 +1,6 @@
 # cv3-inject
 
-![Travis CI](https://api.travis-ci.org/seanmorris/cv3-inject.svg?branch=master)
+[![Travis CI](https://api.travis-ci.org/seanmorris/cv3-inject.svg?branch=master)](https://travis-ci.org/seanmorris/cv3-inject)
 
 Simple dependency injection for ES6
 
