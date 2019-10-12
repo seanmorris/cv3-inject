@@ -1,5 +1,7 @@
 # cv3-inject
 
+![Travis CI](https://api.travis-ci.org/seanmorris/cv3-inject.svg?branch=master)
+
 Simple dependency injection for ES6
 
 ## Install
