@@ -2,17 +2,7 @@
 
 Simple dependency injection for ES6
 
-![cv3-inject](https://img.shields.io/badge/cv3-inject-darkred?style=for-the-badge)
-
-![Version Badge](https://img.shields.io/npm/v/cv3-inject?label=ver&style=for-the-badge)
-
-![Travis (.org)](https://img.shields.io/travis/seanmorris/cv3-inject?style=for-the-badge)
-
-![Downloads Badge](https://img.shields.io/npm/dm/cv3-inject?color=338800&style=for-the-badge)
-
-![Size badge](https://img.shields.io/github/languages/code-size/seanmorris/cv3-inject?style=for-the-badge)
-
-![Apache-2.0 Licence Badge](https://img.shields.io/npm/l/cv3-inject?color=338800&style=for-the-badge)
+![cv3-inject](https://img.shields.io/badge/cv3-inject-darkred?style=for-the-badge) ![Version Badge](https://img.shields.io/npm/v/cv3-inject?label=ver&style=for-the-badge) ![Travis (.org)](https://img.shields.io/travis/seanmorris/cv3-inject?style=for-the-badge) ![Downloads Badge](https://img.shields.io/npm/dm/cv3-inject?color=338800&style=for-the-badge) ![Size badge](https://img.shields.io/github/languages/code-size/seanmorris/cv3-inject?style=for-the-badge) ![Apache-2.0 Licence Badge](https://img.shields.io/npm/l/cv3-inject?color=338800&style=for-the-badge)
 
 ## Install
 
