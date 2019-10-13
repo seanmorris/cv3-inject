@@ -1,0 +1,24 @@
+#!/bin/bash
+files=$(git diff-index --cached HEAD | grep ".js" | grep "^:" | sed 's:.* [DAM][ \\''t]*\([^ \\''t]*\):\1:g')
+
+errors=0
+
+for file in $files; do
+
+	echo "Checking $file..."
+	error=$(npx babel $file 2>&1 1>/dev/null)
+
+	RETVAL=$?
+
+	if [[ $RETVAL != 0 ]]; then
+		echo $error | sed "s,.*,    ${esc}[31m&${esc}[0m,";
+		errors=1
+	fi
+done
+
+if [[ $errors == 1 ]]; then
+	echo "Commit aborted.";
+	exit 1;
+else
+	exit 0;
+fi
