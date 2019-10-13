@@ -1,5 +1,6 @@
 import { Test } from 'cv3-test/Test';
 
-import { XmasTreeTest } from './XmasTreeTest';
+import { XmasTreeTest       } from './XmasTreeTest';
+import { VendingMachineTest } from './VendingMachineTest';
 
-Test.run(XmasTreeTest);
+Test.run(VendingMachineTest, XmasTreeTest);

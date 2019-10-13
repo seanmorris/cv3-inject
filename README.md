@@ -23,15 +23,31 @@ import { Lights } from './Lights';
 export class XmasTree extends Inject(class{}, {
 	lights: Lights, star:Star
 }) {
-	constructor()
-	{
-		super();
-	}
-
 	blink()
 	{
 		this.star.blink();
 		this.lights.blink();
+	}
+}
+```
+
+### Static Dependencies
+
+Keys starting with a capital letter will not be instantiated, and instead, a reference to the class will be passed in.
+
+*(Please note this example uses [object literal shorthand syntax](https://eslint.org/docs/rules/object-shorthand))*
+
+```javascript
+import { Inject } from 'cv3-inject/Inject';
+
+import { Soda } from './Soda';
+
+export class VendingMachine extends Inject(class{}, {
+	lights: Lights, star:Star
+}) {
+	dispense()
+	{
+		return new 
 	}
 }
 ```

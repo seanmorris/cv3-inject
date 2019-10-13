@@ -84,12 +84,12 @@ export class XmasTreeTest extends Test
 	testStatic()
 	{
 		this.assert(
-			XmasTree.star == Star
+			XmasTree.star === Star
 			, 'XmasTree.star is not reference to Star.'
 		);
 
 		this.assert(
-			Lights.star == Star
+			Lights.star === Star
 			, 'Lights.star is not reference to Star.'
 		);
 
@@ -103,15 +103,25 @@ export class XmasTreeTest extends Test
 		});
 
 		this.assert(
-			RedTree.star == RedStar
+			RedTree.star === RedStar
 			, 'RedTree.star is not reference to RedStar.'
 		);
 
 		const redTree = new RedTree;
 
 		this.assert(
-			typeof redTree.Lights == 'function'
+			typeof redTree.Lights === 'function'
 			, 'redTree.Lights is not a class.'
+		);
+
+		this.assert(
+			redTree.Lights === RedLights
+			, 'redTree.Lights is not a referemce to class RedLights.'
+		);
+
+		this.assert(
+			typeof redTree.lights === 'object'
+			, 'redTree.Lights is not an object.'
 		);
 
 		this.assert(

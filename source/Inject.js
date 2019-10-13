@@ -1,8 +1,8 @@
 const injectionSymbol = Symbol('injection');
 const instanceSymbol  = Symbol('instance');
 
-const Inject = (baseClass, injections) => {
-	if(new.target == Inject)
+const Inject = (baseClass, injections) => 
+	if(new.target == Inject
 	{
 		throw new Error(`Cannot access injectable subclass!
 
