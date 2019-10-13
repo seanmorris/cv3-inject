@@ -38,18 +38,23 @@ Keys starting with a capital letter will not be instantiated, and instead, a ref
 *(Please note this example uses [object literal shorthand syntax](https://eslint.org/docs/rules/object-shorthand))*
 
 ```javascript
-import { Inject } from 'cv3-inject/Inject';
+import { Inject } from './Inject';
 
-import { Soda } from './Soda';
+import { Drink  } from './Drink';
+import { Snack  } from './Snack';
 
-export class VendingMachine extends Inject(class{}, {
-	lights: Lights, star:Star
-}) {
-	dispense()
+export class VendingMachine extends Inject(class{}, {Drink, Snack}) {
+	getDrink()
 	{
-		return new 
+		return new this.Drink;
+	}
+
+	getSnack()
+	{
+		return new this.Snack;
 	}
 }
+
 ```
 
 ### Overriding Dependencies
