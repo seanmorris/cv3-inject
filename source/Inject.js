@@ -73,5 +73,4 @@ Please note the parenthesis.
 	return subclass;
 };
 
-
 export { Inject };
