@@ -1,4 +1,4 @@
-.PHONY: build update test clean
+.PHONY: build build-test install update test clean hooks
 
 build:
 	@ npx babel source --out-dir .
@@ -17,6 +17,9 @@ test:
 
 clean:
 	@ rm -rf node_modules *.js
+
+hooks:
+	git config core.hooksPath .githooks
 
 # .PHONY: build test install-dependencies update-dependencies clean audit audit-fix
 
