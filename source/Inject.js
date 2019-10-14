@@ -1,7 +1,7 @@
 const injectionSymbol = Symbol('injection')
 const instanceSymbol  = Symbol('instance');
 
-const Inject = (baseClass, injections) => {
+const Inject = (baseClass, injections, derived) => {
 	if(new.target == Inject)
 	{
 		throw new Error(`Cannot access injectable subclass!
@@ -22,10 +22,21 @@ Please note the parenthesis.
 		? baseClass[injectionSymbol]()
 		: {};
 
-	const allInjections = Object.assign(
+	const staticInjections = Object.assign(
 		{}
 		, existingInjections
 		, injections
+	);
+
+	const derivedInjections = derived
+		? derived(staticInjections)
+		: {};
+
+	const allInjections = Object.assign(
+		{}
+		, existingInjections
+		, staticInjections
+		, derivedInjections
 	);
 
 	const subclass = class extends baseClass {
@@ -60,6 +71,7 @@ Please note the parenthesis.
 					this[name] = instance;
 				}
 			}
+			
 		}
 
 		static [injectionSymbol]()
