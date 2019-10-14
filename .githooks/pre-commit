@@ -15,13 +15,18 @@ for file in $FILES; do
 	echo "Checking $file..."
 	error=$(npx babel $file 2>&1 1>/dev/null)
 
-	RETVAL=$?
-
-	if [[ $RETVAL != 0 ]]; then
+	if [[ $? != 0 ]]; then
 		echo $error | sed "s,.*,    ${esc}[31m&${esc}[0m,";
 		errors=1
 	fi
 done
+
+make test
+
+if [[ $? != 0 ]]; then
+	echo $error | sed "s,.*,    ${esc}[31m&${esc}[0m,";
+	errors=1
+fi
 
 if [[ $errors == 1 ]]; then
 	echo "Commit aborted.";

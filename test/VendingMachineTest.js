@@ -20,48 +20,36 @@ export class VendingMachineTest extends Inject(Test, {
 }){
 	testGetDrink()
 	{
-		const drink = this.vendingMachine.getDrink();
-
 		this.assert(
-			drink instanceof Drink
+			this.vendingMachine.getDrink() instanceof Drink
 			, 'getDrink did not return an instance of Soda.'
 		);
 
-		const soda = this.sodaMachine.getDrink();
-
 		this.assert(
-			soda instanceof Soda
+			this.sodaMachine.getDrink() instanceof Soda
 			, 'sodamachine.getDrink did not return an instance of Soda.'
 		);
 
-		const bottleOfWater = this.waterMachine.getDrink();
-
 		this.assert(
-			bottleOfWater instanceof BottleOfWater
+			this.waterMachine.getDrink() instanceof BottleOfWater
 			, 'waterMachine.getDrink did not return an instance of BottleOfWater.'
 		);
 	}
 
 	testGetSnack()
 	{
-		const snack = this.vendingMachine.getSnack();
-
 		this.assert(
-			snack instanceof Snack
+			this.vendingMachine.getSnack() instanceof Snack
 			, 'getSnack did not return an instance of Snack.'
 		);
 
-		const bagOfChips = this.chipMachine.getSnack();
-
 		this.assert(
-			bagOfChips instanceof BagOfChips
+			this.chipMachine.getSnack() instanceof BagOfChips
 			, 'getSnack did not return an instance of Snack.'
 		);
 
-		const bagOfPretzels = this.pretzelMachine.getSnack();
-
 		this.assert(
-			bagOfPretzels instanceof BagOfPretzels
+			this.pretzelMachine.getSnack() instanceof BagOfPretzels
 			, 'getSnack did not return an instance of Snack.'
 		);
 	}
