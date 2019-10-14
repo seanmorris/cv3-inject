@@ -1,6 +1,6 @@
 import { Test   } from 'cv3-test/Test';
 
-import { Inject } from './Inject';
+import { Inject as I   } from './Inject';
 
 import { Drink         } from './Drink';
 import { Snack         } from './Snack';
@@ -11,14 +11,14 @@ import { BagOfPretzels } from './BagOfPretzels';
 
 import { VendingMachine } from './VendingMachine';
 
-export class VendingMachineTest extends Inject(Test
+export class VendingMachineTest extends I(Test
 	, {vendingMachine:  VendingMachine}
 
 	, ({vendingMachine: VendingMachine})=>({
-		sodaMachine:      Inject(VendingMachine, {Drink:Soda})
-		, waterMachine:   Inject(VendingMachine, {Drink:BottleOfWater})
-		, chipMachine:    Inject(VendingMachine, {Snack:BagOfChips})
-		, pretzelMachine: Inject(VendingMachine, {Snack:BagOfPretzels})
+		sodaMachine:      I(VendingMachine, {Drink:Soda})
+		, waterMachine:   I(VendingMachine, {Drink:BottleOfWater})
+		, chipMachine:    I(VendingMachine, {Snack:BagOfChips})
+		, pretzelMachine: I(VendingMachine, {Snack:BagOfPretzels})
 	})
 ){
 	testGetDrink()

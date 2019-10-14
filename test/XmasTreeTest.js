@@ -1,52 +1,76 @@
 import { Test   } from 'cv3-test/Test';
-import { Inject } from './Inject';
+
+import { Inject as I } from './Inject';
 
 import { XmasTree } from './XmasTree';
 import { Lights   } from './Lights';
 import { Star     } from './Star';
 import { RedStar  } from './RedStar';
 
-export class XmasTreeTest extends Test
-{
+export class XmasTreeTest extends I(Test, {
+		normalTree:  XmasTree
+
+		, redTree:    I(XmasTree, {
+			lights:   I(Lights, {star: RedStar})
+			, star:   RedStar
+		})
+
+		, sameTree:   I(XmasTree, {
+			lights:   I(Lights, {star: RedStar})
+			, star:   RedStar
+		})
+
+		, RedLights:  I(Lights, {star: RedStar})
+
+	}
+
+	, ({RedLights, normalTree}) => ({
+		RedTree:      I(XmasTree, {
+			lights:   RedLights
+			, star:   RedStar
+			, Lights: RedLights
+			, Star:   RedStar
+		})
+		, XmasTree:   normalTree
+	})
+
+	, ({RedTree})=>({
+		redTree:      RedTree
+	})
+
+){
 	testNormalTree()
 	{
-		const normalTree = new XmasTree;
-
 		this.assert(
-			normalTree.star instanceof Star
+			this.normalTree.star instanceof Star
 			, 'normalTree.star is not an instance of Star.'
 		);
 
 		this.assert(
-			!(normalTree.star instanceof RedStar)
+			!(this.normalTree.star instanceof RedStar)
 			, 'normalTree.star is an instance of RedStar.'
 		);
 
 		this.assert(
-			(normalTree instanceof XmasTree)
+			(this.normalTree instanceof XmasTree)
 			, 'normalTree is not an instance of XmasTree.'
 		);
 	}
 
 	testRedTree()
 	{
-		const redTree = new (Inject(XmasTree, {
-			lights: Inject(Lights, {star: RedStar})
-			, star: RedStar
-		}));
-
 		this.assert(
-			redTree.star instanceof Star
+			this.redTree.star instanceof Star
 			, 'redTree.star is not instance of Star.'
 		);
 
 		this.assert(
-			(redTree.star instanceof RedStar)
+			(this.redTree.star instanceof RedStar)
 			, 'redTree.star is not instance of RedStar.'
 		);
 
 		this.assert(
-			(redTree instanceof XmasTree)
+			(this.redTree instanceof XmasTree)
 			, 'redTree is not an instance of XmasTree.'
 		);
 	}
@@ -55,28 +79,23 @@ export class XmasTreeTest extends Test
 	{
 		const redStar = new RedStar;
 
-		const sameTree = new (Inject(XmasTree, {
-			lights: Inject(Lights, {star: redStar})
-			, star: redStar
-		}));
-
 		this.assert(
-			sameTree.star instanceof Star
+			this.sameTree.star instanceof Star
 			, 'sameTree.star is not an instance of Star.'
 		);
 
 		this.assert(
-			(sameTree.star instanceof RedStar)
+			(this.sameTree.star instanceof RedStar)
 			, 'sameTree.star is not an instance of RedStar.'
 		);
 
 		this.assert(
-			(sameTree.star === sameTree.lights.star)
+			(this.sameTree.star === this.sameTree.lights.star)
 			, 'sameTree.star instance is not the same instance as sameTree.lights.star.'
 		);
 
 		this.assert(
-			(sameTree instanceof XmasTree)
+			(this.sameTree instanceof XmasTree)
 			, 'sameTree is not an instance of XmasTree.'
 		);
 	}
@@ -84,7 +103,7 @@ export class XmasTreeTest extends Test
 	testStatic()
 	{
 		this.assert(
-			XmasTree.star === Star
+			this.XmasTree.star === Star
 			, 'XmasTree.star is not reference to Star.'
 		);
 
@@ -93,39 +112,28 @@ export class XmasTreeTest extends Test
 			, 'Lights.star is not reference to Star.'
 		);
 
-		const RedLights = Inject(Lights, {star: RedStar});
-
-		const RedTree = Inject(XmasTree, {
-			lights:   RedLights
-			, star:   RedStar
-			, Lights: RedLights
-			, Star:   RedStar
-		});
-
 		this.assert(
-			RedTree.star === RedStar
+			this.RedTree.star === RedStar
 			, 'RedTree.star is not reference to RedStar.'
 		);
 
-		const redTree = new RedTree;
-
 		this.assert(
-			typeof redTree.Lights === 'function'
-			, 'redTree.Lights is not a class.'
+			typeof this.RedTree.Lights === 'function'
+			, 'RedTree.Lights is not a class.'
 		);
 
 		this.assert(
-			redTree.Lights === RedLights
-			, 'redTree.Lights is not a referemce to class RedLights.'
+			this.RedLights == this.RedTree.Lights
+			, 'RedTree.Lights is not a reference to class RedLights.'
 		);
 
 		this.assert(
-			typeof redTree.lights === 'object'
+			typeof this.redTree.lights === 'object'
 			, 'redTree.Lights is not an object.'
 		);
 
 		this.assert(
-			redTree.lights instanceof RedLights
+			this.redTree.lights instanceof this.RedLights
 			, 'redTree.Lights is not an object of local type "RedLights".'
 		);
 	}

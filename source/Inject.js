@@ -1,7 +1,7 @@
 const injectionSymbol = Symbol('injection')
 const instanceSymbol  = Symbol('instance');
 
-const Inject = (baseClass, injections, derived) => {
+const Inject = (baseClass, injections, ...derived) => {
 	if(new.target == Inject)
 	{
 		throw new Error(`Cannot access injectable subclass!
@@ -28,9 +28,12 @@ Please note the parenthesis.
 		, injections
 	);
 
-	const derivedInjections = derived
-		? derived(staticInjections)
-		: {};
+	let derivedInjections = Object.assign({}, staticInjections);
+
+	for(const iteration of derived)
+	{
+		Object.assign(derivedInjections, iteration(derivedInjections));
+	}
 
 	const allInjections = Object.assign(
 		{}
