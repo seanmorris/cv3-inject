@@ -25,7 +25,7 @@ export class VendingMachineTest extends Inject(Test
 	{
 		this.assert(
 			this.vendingMachine.getDrink() instanceof Drink
-			, 'getDrink did not return an instance of Soda.'
+			, 'vendingMachine.getDrink did not return an instance of Soda.'
 		);
 
 		this.assert(
@@ -43,17 +43,17 @@ export class VendingMachineTest extends Inject(Test
 	{
 		this.assert(
 			this.vendingMachine.getSnack() instanceof Snack
-			, 'getSnack did not return an instance of Snack.'
+			, 'vendingMachine.getSnack did not return an instance of Snack.'
 		);
 
 		this.assert(
 			this.chipMachine.getSnack() instanceof BagOfChips
-			, 'getSnack did not return an instance of BagOfChips.'
+			, 'chipMachine.getSnack did not return an instance of BagOfChips.'
 		);
 
 		this.assert(
 			this.pretzelMachine.getSnack() instanceof BagOfPretzels
-			, 'getSnack did not return an instance of BagOfPretzels.'
+			, 'pretzelMachine.getSnack did not return an instance of BagOfPretzels.'
 		);
 	}
 }
