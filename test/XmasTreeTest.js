@@ -1,6 +1,6 @@
-import { Test } from 'cv3-test/Test';
+import { Test   } from 'cv3-test/Test';
+import { Inject } from './Inject';
 
-import { Inject   } from './Inject';
 import { XmasTree } from './XmasTree';
 import { Lights   } from './Lights';
 import { Star     } from './Star';

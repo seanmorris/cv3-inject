@@ -1,4 +1,4 @@
-const injectionSymbol = Symbol('injection');
+const injectionSymbol = Symbol('injection')
 const instanceSymbol  = Symbol('instance');
 
 const Inject = (baseClass, injections) => {

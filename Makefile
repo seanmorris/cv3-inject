@@ -6,6 +6,9 @@ build:
 build-test:
 	@ npx babel source test --out-dir .
 
+build-dist:
+	@ brunch build -p
+
 install:
 	@ npm install
 

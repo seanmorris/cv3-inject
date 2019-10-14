@@ -1,4 +1,4 @@
-import { Test } from 'cv3-test/Test';
+import { Test   } from 'cv3-test/Test';
 
 import { Inject } from './Inject';
 
@@ -11,29 +11,30 @@ import { BagOfPretzels } from './BagOfPretzels';
 
 import { VendingMachine } from './VendingMachine';
 
-export class VendingMachineTest extends Inject(Test, {VendingMachine})
-{
+export class VendingMachineTest extends Inject(Test, {
+	vendingMachine:  VendingMachine
+	, sodaMachine:   Inject(VendingMachine, {Drink:Soda})
+	, waterMachine:  Inject(VendingMachine, {Drink:BottleOfWater})
+	, chipMachine:   Inject(VendingMachine, {Snack:BagOfChips})
+	, pretzelMachine:Inject(VendingMachine, {Snack:BagOfPretzels})
+}){
 	testGetDrink()
 	{
-		const vendingMachine = new this.VendingMachine;
-		const sodaMachine    = new (Inject(this.VendingMachine, {Drink:Soda}));
-		const waterMachine   = new (Inject(this.VendingMachine, {Drink:BottleOfWater}));
-
-		const drink = vendingMachine.getDrink();
+		const drink = this.vendingMachine.getDrink();
 
 		this.assert(
 			drink instanceof Drink
 			, 'getDrink did not return an instance of Soda.'
 		);
 
-		const soda = sodaMachine.getDrink();
+		const soda = this.sodaMachine.getDrink();
 
 		this.assert(
 			soda instanceof Soda
 			, 'sodamachine.getDrink did not return an instance of Soda.'
 		);
 
-		const bottleOfWater = waterMachine.getDrink();
+		const bottleOfWater = this.waterMachine.getDrink();
 
 		this.assert(
 			bottleOfWater instanceof BottleOfWater
@@ -43,25 +44,21 @@ export class VendingMachineTest extends Inject(Test, {VendingMachine})
 
 	testGetSnack()
 	{
-		const vendingMachine = new this.VendingMachine;
-		const chipMachine    = new (Inject(this.VendingMachine, {Snack:BagOfChips}));
-		const pretzelMachine = new (Inject(this.VendingMachine, {Snack:BagOfPretzels}));
-
-		const snack = vendingMachine.getSnack();
+		const snack = this.vendingMachine.getSnack();
 
 		this.assert(
 			snack instanceof Snack
 			, 'getSnack did not return an instance of Snack.'
 		);
 
-		const bagOfChips = chipMachine.getSnack();
+		const bagOfChips = this.chipMachine.getSnack();
 
 		this.assert(
 			bagOfChips instanceof BagOfChips
 			, 'getSnack did not return an instance of Snack.'
 		);
 
-		const bagOfPretzels = pretzelMachine.getSnack();
+		const bagOfPretzels = this.pretzelMachine.getSnack();
 
 		this.assert(
 			bagOfPretzels instanceof BagOfPretzels

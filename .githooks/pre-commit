@@ -1,9 +1,16 @@
 #!/bin/bash
-files=$(git diff-index --cached HEAD | grep ".js" | grep "^:" | sed 's:.* [DAM][ \\''t]*\([^ \\''t]*\):\1:g')
+FILES=$(
+	git diff-index HEAD \
+	| grep ".js$" \
+	| grep "^:"   \
+	| perl -pe 's/.*?\s[DAM]\s+//g' \
+)
+
+echo $FILES
 
 errors=0
 
-for file in $files; do
+for file in $FILES; do
 
 	echo "Checking $file..."
 	error=$(npx babel $file 2>&1 1>/dev/null)
