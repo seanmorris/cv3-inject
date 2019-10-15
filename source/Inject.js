@@ -1,5 +1,8 @@
-const injectionSymbol = Symbol('injection')
+const injectionSymbol = Symbol('injection');
 const instanceSymbol  = Symbol('instance');
+
+const getParentInjection  = Symbol('getParentInjection');
+const parentInjector      = Symbol('parent');
 
 const Inject = (baseClass, injections, ...derived) => {
 	if(new.target == Inject)
@@ -49,11 +52,44 @@ Please note the parenthesis.
 
 			for(let name in allInjections)
 			{
-				let   instance  = undefined;
-				const injection = allInjections[name];
+				let instance  = undefined;
+				let injection = allInjections[name];
+
+				if(injection === undefined)
+				{
+					if(!this.constructor[parentInjector])
+					{
+						throw new Error(
+							`Cannot accept undefined for ${name} on top-level injection.`
+						);
+					}
+
+					let parent = this.constructor[parentInjector];
+
+					while(parent)
+					{
+						if(parent[name])
+						{
+							injection = parent[name];
+
+							break;
+						}
+
+						parent = parent[parentInjector];
+					}
+
+					if(injection === undefined)
+					{
+						throw new Error(
+							`Injection ${name} not found in hierarchy.`
+						);
+					}
+				}
 
 				if(injection.prototype && !name.match(/^_*?[A-Z]/))
 				{
+					injection[parentInjector] = this;
+
 					instance = new injection;
 				}
 				else
@@ -73,8 +109,7 @@ Please note the parenthesis.
 				{
 					this[name] = instance;
 				}
-			}
-			
+			}			
 		}
 
 		static [injectionSymbol]()

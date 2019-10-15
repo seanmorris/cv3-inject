@@ -7,36 +7,32 @@ import { Lights   } from './Lights';
 import { Star     } from './Star';
 import { RedStar  } from './RedStar';
 
-export class XmasTreeTest extends I(Test, {
-		normalTree:  XmasTree
-
+export class XmasTreeTest extends I(Test,
+	{
+		normalTree:   XmasTree
 		, redTree:    I(XmasTree, {
 			lights:   I(Lights, {star: RedStar})
 			, star:   RedStar
 		})
-
 		, sameTree:   I(XmasTree, {
-			lights:   I(Lights, {star: RedStar})
-			, star:   RedStar
+			star:     RedStar
+			, lights: I(Lights, {star: undefined})
 		})
-
 		, RedLights:  I(Lights, {star: RedStar})
-
 	}
 
 	, ({RedLights, normalTree}) => ({
-		RedTree:      I(XmasTree, {
+		XmasTree:     normalTree
+		, RedTree:    I(XmasTree, {
 			lights:   RedLights
 			, star:   RedStar
 			, Lights: RedLights
 			, Star:   RedStar
 		})
-		, XmasTree:   normalTree
+
 	})
 
-	, ({RedTree})=>({
-		redTree:      RedTree
-	})
+	, ({RedTree})=>({redTree:RedTree})
 
 ){
 	testNormalTree()
@@ -52,7 +48,7 @@ export class XmasTreeTest extends I(Test, {
 		);
 
 		this.assert(
-			(this.normalTree instanceof XmasTree)
+			this.normalTree instanceof XmasTree
 			, 'normalTree is not an instance of XmasTree.'
 		);
 	}
@@ -65,37 +61,40 @@ export class XmasTreeTest extends I(Test, {
 		);
 
 		this.assert(
-			(this.redTree.star instanceof RedStar)
+			this.redTree.star instanceof RedStar
 			, 'redTree.star is not instance of RedStar.'
 		);
 
 		this.assert(
-			(this.redTree instanceof XmasTree)
+			this.redTree instanceof XmasTree
 			, 'redTree is not an instance of XmasTree.'
 		);
 	}
 
 	testSameTree()
 	{
-		const redStar = new RedStar;
-
 		this.assert(
 			this.sameTree.star instanceof Star
 			, 'sameTree.star is not an instance of Star.'
 		);
 
 		this.assert(
-			(this.sameTree.star instanceof RedStar)
+			this.sameTree.star instanceof RedStar
 			, 'sameTree.star is not an instance of RedStar.'
 		);
 
 		this.assert(
-			(this.sameTree.star === this.sameTree.lights.star)
+			 typeof this.sameTree.lights.star === 'object'
+			, 'sameTree.lights.star instance is not an object.'
+		);
+
+		this.assert(
+			this.sameTree.star === this.sameTree.lights.star
 			, 'sameTree.star instance is not the same instance as sameTree.lights.star.'
 		);
 
 		this.assert(
-			(this.sameTree instanceof XmasTree)
+			this.sameTree instanceof XmasTree
 			, 'sameTree is not an instance of XmasTree.'
 		);
 	}
