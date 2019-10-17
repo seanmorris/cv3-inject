@@ -20,6 +20,11 @@ export class VendingMachineTest extends I(Test
 		, chipMachine:    I(VendingMachine, {Snack:BagOfChips})
 		, pretzelMachine: I(VendingMachine, {Snack:BagOfPretzels})
 	})
+
+	, ({pretzelMachine: PretzelMachine, chipMachine:  ChipMachine}) => ({
+		chipsAndWaterMachine:    I(ChipMachine,    {Drink:BottleOfWater})
+		, pretzelAndSodaMachine: I(PretzelMachine, {Drink:Soda})
+	})
 ){
 	testGetDrink()
 	{
@@ -36,6 +41,16 @@ export class VendingMachineTest extends I(Test
 		this.assert(
 			this.waterMachine.getDrink() instanceof BottleOfWater
 			, 'waterMachine.getDrink did not return an instance of BottleOfWater.'
+		);
+
+		this.assert(
+			this.pretzelAndSodaMachine.getDrink() instanceof Soda
+			, 'pretzelAndSodaMachine.getDrink did not return an instance of Soda.'
+		);
+
+		this.assert(
+			this.chipsAndWaterMachine.getDrink() instanceof BottleOfWater
+			, 'ChipsAndWaterMachine.getDrink did not return an instance of waterMachine.'
 		);
 	}
 
@@ -54,6 +69,16 @@ export class VendingMachineTest extends I(Test
 		this.assert(
 			this.pretzelMachine.getSnack() instanceof BagOfPretzels
 			, 'pretzelMachine.getSnack did not return an instance of BagOfPretzels.'
+		);
+
+		this.assert(
+			this.pretzelAndSodaMachine.getSnack() instanceof BagOfPretzels
+			, 'pretzelAndSodaMachine.getSnack did not return an instance of BagOfPretzels.'
+		);
+
+		this.assert(
+			this.chipsAndWaterMachine.getSnack() instanceof BagOfChips
+			, 'ChipsAndWaterMachine.getSnack did not return an instance of BagOfChips.'
 		);
 	}
 }

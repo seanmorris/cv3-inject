@@ -91,6 +91,8 @@ Please note the parenthesis.
 					injection[parentInjector] = this;
 
 					instance = new injection;
+
+					delete injection[parentInjector];
 				}
 				else
 				{

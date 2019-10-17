@@ -1,3 +1,5 @@
+![avatar](https://avatars3.githubusercontent.com/u/640101?s=80&v=4)
+
 # cv3-inject
 
 Simple dependency injection for ES6
@@ -63,9 +65,6 @@ export class VendingMachine extends Inject(class{}, {Drink, Snack}) {
 You can inject dependencies in-place, before instantiation. This essentially creates a new subclass on the fly. Please be mindful of the parentheses placement.
 
 ```javascript
-import { XmasTree } from './XmasTree';
-import { RedStar  } from './RedStar';
-
 const redTree = new (Inject(XmasTree, {star: RedStar} ));
 ```
 
@@ -75,22 +74,53 @@ The dynamically created class will still register as an instance of the base cla
 console.assert(redTree instanceof XmasTree);
 ```
 
-### Pre-instantiated Dependencies
-
-Dependencies may be instantiated before the main object. In the below example, both the `sameTree.star` object and `sameTree.lights.star` will hold a reference to the same instance of `RedStar`.
-
+### Hierarchical Dependencies
 ```javascript
-import { RedStar  } from './RedStar';
-import { Lights   } from './Lights';
-import { XmasTree } from './XmasTree';
-
-const rs = new RedStar;
-
 const sameTree = new (Inject(XmasTree, {
-	lights: Inject(Lights, {star: rs})
-	, star: rs
+	star:     RedStar
+	, lights: Inject(Lights, {star: undefined})
 }));
 ```
+
+Explcitily setting an injection to `undefined` will cause the injector to check the parent injector for the same key, and if not, its parent, and so on.
+
+Top level injections will throw an error if an injection is `undefined`.
+
+In this example, every new instance of the injected `XmasTree` will hold a reference to rhe same `RedStar` at `instance.star` and `instance.lights.star`.
+
+**Note** Child injections can only access parent injections that preceed it in the precedence order in the **base definition**. In the above example, `.star` could not be modified to hold a reference to `.lights`, even if a subclass injection contained a different ordering. Please keep this in mind while designing dependence hierarchies.
+
+### Cascading Dependencies
+
+```javascript
+import { Inject as I } from 'cv3-inject/Inject';
+// ... more imports
+
+export class VendingMachineTest extends (Test
+	, {vendingMachine:  VendingMachine}
+
+	, ({vendingMachine: VendingMachine}) => ({
+		sodaMachine:      I(VendingMachine, {Drink:Soda})
+		, waterMachine:   I(VendingMachine, {Drink:BottleOfWater})
+		, chipMachine:    I(VendingMachine, {Snack:BagOfChips})
+		, pretzelMachine: I(VendingMachine, {Snack:BagOfPretzels})
+	})
+
+	, ({pretzelMachine: PretzelMachine}) => ({
+		pretzelAndSodaMachine: I(PretzelMachine, {Drink:Soda})
+	})
+
+){...}
+```
+*Note that the Inject() function has been aliased to I().*
+
+In this example, the normal dependency list specifies a dependency that will resolve to an instance of `VendingMachine`, available on the `.vendingMachine` property of the instance. `.sodaMachine`, `.waterMachine` and so on will then use `VendingMachine` as their base class.
+
+This allows us to later inject different `VendingMachine` subclasses (which may have different behaviors) into the `VendingMachineTest`.
+
+Multiple dependency cascades can be can be defined to accommodate any level of complextiy. Each one will contribute to, and read from the same pool of dependencies.
+
+Please note the double bubble notation on the arrow function: `({ })=>({ })`. This allows us to 1: Destructure our static dependency list into variables, and 2: directly return an object via shorthand, i.e. without an explict `return`.
 
 ## License 
 
