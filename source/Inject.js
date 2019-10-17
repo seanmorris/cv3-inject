@@ -88,6 +88,11 @@ Please note the parenthesis.
 
 				if(injection.prototype && !name.match(/^_*?[A-Z]/))
 				{
+					if(this[name] && this[name].constructor === injection)
+					{
+						continue;
+					}
+
 					injection[parentInjector] = this;
 
 					instance = new injection;
