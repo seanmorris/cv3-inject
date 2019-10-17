@@ -4,4 +4,4 @@ import { XmasTreeTest       } from './XmasTreeTest';
 import { VendingMachineTest } from './VendingMachineTest';
 import { ExtendedVendingMachineTest } from './ExtendedVendingMachineTest';
 
-Test.run(VendingMachineTest, ExtendedVendingMachineTest);
+Test.run(XmasTreeTest, VendingMachineTest, ExtendedVendingMachineTest);
