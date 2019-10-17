@@ -96,7 +96,7 @@ In this example, every new instance of the injected `XmasTree` will hold a refer
 import { Inject as I } from 'cv3-inject/Inject';
 // ... more imports
 
-export class VendingMachineTest extends (Test
+export class VendingMachineTest extends I(Test
 	, {vendingMachine:  VendingMachine}
 
 	, ({vendingMachine: VendingMachine}) => ({
