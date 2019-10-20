@@ -12,17 +12,14 @@ export class ShuffleTest extends Test
 {
 	testObjectShuffle()
 	{
-		const AbsB  = I(DepB, {a: undefined});
-
 		class Base extends I(class{}, {
 				a: DepA, b: DepB
 			}
 		){};
 
-		class Sub extends I(Base, {
-				b: AbsB
-			}
-		){};
+		const AbsB  = I(DepB, {a: undefined});
+
+		class Sub extends I(Base, {b: AbsB}){};
 
 		class SubSub extends I(Sub, {
 			b: AbsB
@@ -159,7 +156,7 @@ export class ShuffleTest extends Test
 
 		this.assert(
 			reMeth.callInjection() === 'Normal.'
-			, 'Remethodable.callInjection returned expected value for normal.'
+			, 'Remethodable.callInjection returned unexpected value for normal.'
 		);
 
 		class ReMethodable2 extends I(ReMethodable, {
@@ -178,7 +175,7 @@ export class ShuffleTest extends Test
 
 		this.assert(
 			reMeth2.callInjection() === 'Injected.'
-			, 'Remethodable2.callInjection returned expected value for normal.'
+			, 'Remethodable2.callInjection returned unexpected value for normal.'
 		);
 	}
 }

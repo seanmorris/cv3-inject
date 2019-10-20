@@ -63,14 +63,6 @@ Please note the parenthesis.
 
 				if(injection === undefined)
 				{
-					if(!this.constructor[parentInjector])
-					{
-						// throw new Error(
-						// 	`Cannot accept undefined for ${name}`
-						// 	+` on top-level injection ${this.constructor.name}.`
-						// );
-					}
-
 					let parent = this.constructor[parentInjector];
 
 					while(parent)
@@ -83,13 +75,6 @@ Please note the parenthesis.
 						}
 
 						parent = parent[parentInjector];
-					}
-
-					if(injection === undefined)
-					{
-						// throw new Error(
-						// 	`Injection ${name} not found in hierarchy.`
-						// );
 					}
 				}
 
@@ -111,7 +96,7 @@ Please note the parenthesis.
 					instance = injection;
 				}
 
-				if(1 || !this[name])
+				if(!this[name])
 				{
 					Object.defineProperty(this, name, {
 						enumerable: false,
