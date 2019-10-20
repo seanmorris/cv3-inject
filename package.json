@@ -8,7 +8,7 @@
     "babel-cli": "^6.26.0",
     "babel-brunch": "^6.1.1",
     "babel-preset-es2015": "^6.24.1",
-    "cv3-test": "^0.0.2"
+    "cv3-test": "^0.0.4"
   },
   "dependencies": {},
   "files": [

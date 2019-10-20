@@ -7,18 +7,13 @@ const parentInjector      = Symbol('parent');
 const Inject = (baseClass, injections, ...derived) => {
 	if(new.target == Inject)
 	{
-		throw new Error(`Cannot access injectable subclass!
-
-Are you trying to instantiate like this?
-
-new Inject(baseClass, injections);
-
-If so please try:
-
-new (Inject(baseClass, injections));
-
-Please note the parenthesis.
-`);
+		throw new Error(`Cannot access injectable subclass!\n
+			Are you trying to instantiate like this?\n
+			new Inject(baseClass, injections);\n
+			If so please try:\n
+			new (Inject(baseClass, injections));\n
+			Please note the parenthesis.\n`.replace(/\n[\t ]+/g, "\n")
+		);
 	}
 
 	const existingInjections = baseClass[injectionSymbol]
@@ -40,6 +35,7 @@ Please note the parenthesis.
 
 	const allInjections = Object.assign(
 		{}
+		, injections
 		, existingInjections
 		, staticInjections
 		, derivedInjections
@@ -57,18 +53,11 @@ Please note the parenthesis.
 
 				if(injection === undefined)
 				{
-					if(!this.constructor[parentInjector])
-					{
-						throw new Error(
-							`Cannot accept undefined for ${name} on top-level injection.`
-						);
-					}
-
 					let parent = this.constructor[parentInjector];
 
 					while(parent)
 					{
-						if(parent[name])
+						if(name in parent)
 						{
 							injection = parent[name];
 
@@ -77,16 +66,9 @@ Please note the parenthesis.
 
 						parent = parent[parentInjector];
 					}
-
-					if(injection === undefined)
-					{
-						throw new Error(
-							`Injection ${name} not found in hierarchy.`
-						);
-					}
 				}
 
-				if(injection.prototype && !name.match(/^_*?[A-Z]/))
+				if(injection && injection.prototype && !name.match(/^_*?[A-Z]/))
 				{
 					if(this[name] && this[name].constructor === injection)
 					{
