@@ -6,6 +6,7 @@ FILES=$(
 	git diff-index HEAD \
 	| grep ".js$" \
 	| grep "^:"   \
+	| perl -ne 'print if m/.*?\s[AM]\s+/g' \
 	| perl -pe 's/.*?\s[DAM]\s+//g' \
 )
 
