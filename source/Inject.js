@@ -33,40 +33,46 @@ const Inject = (baseClass, injections, ...derived) => {
 		, existingInjections
 		, staticInjections
 		, injections
-		// , derivedInjections
 	);
+
+	let derivedInjections = Object.assign({}, allInjections);
+
+	let parent = baseClass;
+
+	const parents = [];
+
+	while(parent)
+	{
+		if(!parent[derivedSymbol])
+		{
+			parent = Object.getPrototypeOf(parent);
+			continue;
+		}
+
+		parents.unshift(parent);
+
+		parent = Object.getPrototypeOf(parent);
+	}
+
+	for(const parent of parents)
+	{
+		const _derived = parent[derivedSymbol](derivedInjections);
+
+		for(const iteration of _derived)
+		{
+			Object.assign(derivedInjections, iteration(derivedInjections));
+		}
+	}
+
+	for(const iteration of derived)
+	{
+		Object.assign(derivedInjections, iteration(derivedInjections));
+	}
 
 	const subclass = class extends baseClass {
 		constructor(...args)
 		{
 			super(...args);
-
-			let derivedInjections = Object.assign({}, allInjections);
-
-			let parent = this.constructor;
-
-			for(const iteration of derived)
-			{
-				Object.assign(derivedInjections, iteration(derivedInjections));
-			}
-
-			while(parent)
-			{
-				if(!parent[derivedSymbol])
-				{
-					parent = Object.getPrototypeOf(parent);
-					continue;
-				}
-
-				let derived = parent[derivedSymbol](derivedInjections);
-
-				for(const iteration of derived)
-				{
-					Object.assign(derivedInjections, iteration(derivedInjections));
-				}
-
-				parent = Object.getPrototypeOf(parent);
-			}
 
 			for(let name in derivedInjections)
 			{
@@ -134,7 +140,7 @@ const Inject = (baseClass, injections, ...derived) => {
 		}
 	};
 
-	Object.assign(subclass, allInjections);
+	Object.assign(subclass, allInjections, derivedInjections);
 
 	return subclass;
 };

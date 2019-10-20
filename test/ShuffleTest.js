@@ -156,7 +156,13 @@ export class ShuffleTest extends Test
 
 		this.assert(
 			reMeth.callInjection() === 'Normal.'
-			, 'Remethodable.callInjection returned '
+			, 'reMeth.callInjection returned '
+				+ `unexpected value for normal.`
+		);
+
+		this.assert(
+			ReMethodable.MethodA() === 'Normal.'
+			, 'Remethodable.MethodA returned '
 				+ `unexpected value for normal.`
 		);
 
@@ -176,7 +182,27 @@ export class ShuffleTest extends Test
 
 		this.assert(
 			reMeth2.callInjection() === 'Injected.'
-			, 'Remethodable2.callInjection returned unexpected value for Injected.'
+			, 'reMeth2.callInjection returned unexpected value for Injected.'
+		);
+
+		this.assert(
+			reMeth2.MethodA() === 'Injected.'
+			, 'reMeth2.MethodA returned unexpected value for Injected.'
+		);
+
+		this.assert(
+			reMeth2.MethodB() === 'Injected.'
+			, 'reMeth2.MethodB returned unexpected value for Injected.'
+		);
+
+		this.assert(
+			ReMethodable2.MethodA() === 'Injected.'
+			, 'ReMethodable2.MethodA returned unexpected value for Injected.'
+		);
+
+		this.assert(
+			ReMethodable2.MethodB() === 'Injected.'
+			, 'ReMethodable2.MethodB returned unexpected value for Injected.'
 		);
 
 		class ReMethodable3 extends I(ReMethodable2, {
@@ -190,7 +216,27 @@ export class ShuffleTest extends Test
 
 		this.assert(
 			reMeth3.callInjection() === 'Injected 2.'
-			, 'Remethodable2.callInjection returned unexpected value for Injected 2.'
+			, 'reMeth3.callInjection returned unexpected value for Injected 2.'
+		);
+
+		this.assert(
+			reMeth3.MethodA() === 'Injected 2.'
+			, 'reMeth3.MethodA returned unexpected value for Injected 2.'
+		);
+
+		this.assert(
+			reMeth3.MethodB() === 'Injected 2.'
+			, 'reMeth3.MethodA returned unexpected value for Injected 2.'
+		);
+
+		this.assert(
+			ReMethodable3.MethodA() === 'Injected 2.'
+			, 'ReMethodable3.MethodA returned unexpected value for Injected 2.'
+		);
+
+		this.assert(
+			ReMethodable3.MethodB() === 'Injected 2.'
+			, 'ReMethodable3.MethodB returned unexpected value for Injected 2.'
 		);
 	}
 }
