@@ -1,6 +1,6 @@
 {
   "name": "cv3-inject",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Dependency injection code.",
   "author": "Sean Morris",
   "license": "Apache-2.0",

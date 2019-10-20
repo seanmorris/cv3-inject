@@ -1,5 +1,6 @@
 const injectionSymbol = Symbol('injection');
-const instanceSymbol  = Symbol('instance');
+const derivedSymbol   = Symbol('derived');
+// const instanceSymbol  = Symbol('instance');
 
 const getParentInjection  = Symbol('getParentInjection');
 const parentInjector      = Symbol('parent');
@@ -26,19 +27,13 @@ const Inject = (baseClass, injections, ...derived) => {
 		, injections
 	);
 
-	let derivedInjections = Object.assign({}, staticInjections);
-
-	for(const iteration of derived)
-	{
-		Object.assign(derivedInjections, iteration(derivedInjections));
-	}
-
 	const allInjections = Object.assign(
 		{}
 		, injections
 		, existingInjections
 		, staticInjections
-		, derivedInjections
+		, injections
+		// , derivedInjections
 	);
 
 	const subclass = class extends baseClass {
@@ -46,10 +41,37 @@ const Inject = (baseClass, injections, ...derived) => {
 		{
 			super(...args);
 
-			for(let name in allInjections)
+			let derivedInjections = Object.assign({}, allInjections);
+
+			let parent = this.constructor;
+
+			for(const iteration of derived)
+			{
+				Object.assign(derivedInjections, iteration(derivedInjections));
+			}
+
+			while(parent)
+			{
+				if(!parent[derivedSymbol])
+				{
+					parent = Object.getPrototypeOf(parent);
+					continue;
+				}
+
+				let derived = parent[derivedSymbol](derivedInjections);
+
+				for(const iteration of derived)
+				{
+					Object.assign(derivedInjections, iteration(derivedInjections));
+				}
+
+				parent = Object.getPrototypeOf(parent);
+			}
+
+			for(let name in derivedInjections)
 			{
 				let instance  = undefined;
-				let injection = allInjections[name];
+				let injection = derivedInjections[name];
 
 				if(injection === undefined)
 				{
@@ -104,6 +126,11 @@ const Inject = (baseClass, injections, ...derived) => {
 		static [injectionSymbol]()
 		{
 			return allInjections;
+		}
+
+		static [derivedSymbol]()
+		{
+			return derived;
 		}
 	};
 

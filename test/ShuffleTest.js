@@ -156,7 +156,8 @@ export class ShuffleTest extends Test
 
 		this.assert(
 			reMeth.callInjection() === 'Normal.'
-			, 'Remethodable.callInjection returned unexpected value for normal.'
+			, 'Remethodable.callInjection returned '
+				+ `unexpected value for normal.`
 		);
 
 		class ReMethodable2 extends I(ReMethodable, {
@@ -175,7 +176,21 @@ export class ShuffleTest extends Test
 
 		this.assert(
 			reMeth2.callInjection() === 'Injected.'
-			, 'Remethodable2.callInjection returned unexpected value for normal.'
+			, 'Remethodable2.callInjection returned unexpected value for Injected.'
+		);
+
+		class ReMethodable3 extends I(ReMethodable2, {
+				MethodB: () => {
+					return 'Injected 2.'
+				}
+			}
+		){};
+
+		const reMeth3 = new ReMethodable3;
+
+		this.assert(
+			reMeth3.callInjection() === 'Injected 2.'
+			, 'Remethodable2.callInjection returned unexpected value for Injected 2.'
 		);
 	}
 }
