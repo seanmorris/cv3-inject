@@ -7,18 +7,13 @@ const parentInjector      = Symbol('parent');
 const Inject = (baseClass, injections, ...derived) => {
 	if(new.target == Inject)
 	{
-		throw new Error(`Cannot access injectable subclass!
-
-Are you trying to instantiate like this?
-
-new Inject(baseClass, injections);
-
-If so please try:
-
-new (Inject(baseClass, injections));
-
-Please note the parenthesis.
-`);
+		throw new Error(`Cannot access injectable subclass!\n
+			Are you trying to instantiate like this?\n
+			new Inject(baseClass, injections);\n
+			If so please try:\n
+			new (Inject(baseClass, injections));\n
+			Please note the parenthesis.\n`.replace(/\n[\t ]+/g, "\n")
+		);
 	}
 
 	const existingInjections = baseClass[injectionSymbol]
@@ -40,15 +35,10 @@ Please note the parenthesis.
 
 	const allInjections = Object.assign(
 		{}
+		, injections
 		, existingInjections
 		, staticInjections
 		, derivedInjections
-	);
-
-	const sortedInjections = Object.assign(
-		{}
-		, injections
-		, allInjections
 	);
 
 	const subclass = class extends baseClass {
@@ -56,10 +46,10 @@ Please note the parenthesis.
 		{
 			super(...args);
 
-			for(let name in sortedInjections)
+			for(let name in allInjections)
 			{
 				let instance  = undefined;
-				let injection = sortedInjections[name];
+				let injection = allInjections[name];
 
 				if(injection === undefined)
 				{
@@ -113,11 +103,11 @@ Please note the parenthesis.
 
 		static [injectionSymbol]()
 		{
-			return sortedInjections;
+			return allInjections;
 		}
 	};
 
-	Object.assign(subclass, sortedInjections);
+	Object.assign(subclass, allInjections);
 
 	return subclass;
 };
