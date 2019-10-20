@@ -45,30 +45,37 @@ Please note the parenthesis.
 		, derivedInjections
 	);
 
+	const sortedInjections = Object.assign(
+		{}
+		, injections
+		, allInjections
+	);
+
 	const subclass = class extends baseClass {
 		constructor(...args)
 		{
 			super(...args);
 
-			for(let name in allInjections)
+			for(let name in sortedInjections)
 			{
 				let instance  = undefined;
-				let injection = allInjections[name];
+				let injection = sortedInjections[name];
 
 				if(injection === undefined)
 				{
 					if(!this.constructor[parentInjector])
 					{
-						throw new Error(
-							`Cannot accept undefined for ${name} on top-level injection.`
-						);
+						// throw new Error(
+						// 	`Cannot accept undefined for ${name}`
+						// 	+` on top-level injection ${this.constructor.name}.`
+						// );
 					}
 
 					let parent = this.constructor[parentInjector];
 
 					while(parent)
 					{
-						if(parent[name])
+						if(name in parent)
 						{
 							injection = parent[name];
 
@@ -80,13 +87,13 @@ Please note the parenthesis.
 
 					if(injection === undefined)
 					{
-						throw new Error(
-							`Injection ${name} not found in hierarchy.`
-						);
+						// throw new Error(
+						// 	`Injection ${name} not found in hierarchy.`
+						// );
 					}
 				}
 
-				if(injection.prototype && !name.match(/^_*?[A-Z]/))
+				if(injection && injection.prototype && !name.match(/^_*?[A-Z]/))
 				{
 					if(this[name] && this[name].constructor === injection)
 					{
@@ -104,7 +111,7 @@ Please note the parenthesis.
 					instance = injection;
 				}
 
-				if(!this[name])
+				if(1 || !this[name])
 				{
 					Object.defineProperty(this, name, {
 						enumerable: false,
@@ -121,11 +128,11 @@ Please note the parenthesis.
 
 		static [injectionSymbol]()
 		{
-			return allInjections;
+			return sortedInjections;
 		}
 	};
 
-	Object.assign(subclass, allInjections);
+	Object.assign(subclass, sortedInjections);
 
 	return subclass;
 };
